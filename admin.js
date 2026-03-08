@@ -65,71 +65,58 @@ async function loadUsers() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error(error);
     usersList.innerHTML = `<p class="note">تعذر تحميل المستخدمين</p>`;
     return;
   }
 
-  renderUsers(data);
+  renderUsers(data || []);
 }
 
 function renderUsers(users) {
   const usersList = document.getElementById("usersList");
 
-  if (!users || users.length === 0) {
+  if (!users.length) {
     usersList.innerHTML = `<p class="note">لا يوجد مستخدمون</p>`;
     return;
   }
 
-  usersList.innerHTML = users.map((user) => {
-    return `
-      <div class="admin-card" data-user-card>
-        <div class="admin-card-top">
-          <div>
-            <h3>${user.full_name || "مستخدم"}</h3>
-            <p>${user.email || "-"}</p>
-          </div>
-          <span class="mini-badge">${user.role || "user"}</span>
+  usersList.innerHTML = users.map((user) => `
+    <div class="admin-card" data-user-card>
+      <div class="admin-card-top">
+        <div>
+          <h3>${user.full_name || "مستخدم"}</h3>
+          <p>${user.email || "-"}</p>
         </div>
-
-        <div class="deposit-row">
-          <span>UID</span>
-          <strong>${user.uid || "--"}</strong>
-        </div>
-
-        <div class="deposit-row">
-          <span>الرصيد</span>
-          <strong>${formatMoney(user.balance)} USDT</strong>
-        </div>
-
-        <div class="deposit-row">
-          <span>الرصيد الاستثماري</span>
-          <strong>${formatMoney(user.investment_balance)} USDT</strong>
-        </div>
-
-        <div class="deposit-row">
-          <span>المتاح للسحب</span>
-          <strong>${formatMoney(user.available_withdraw)} USDT</strong>
-        </div>
-
-        <div class="deposit-row">
-          <span>VIP</span>
-          <strong>VIP${user.vip_level || 0}</strong>
-        </div>
-
-        <div class="deposit-row">
-          <span>الحالة</span>
-          <strong>${user.is_active ? "نشط" : "موقوف"}</strong>
-        </div>
-
-        <div class="admin-actions">
-          <button class="small-btn" onclick="changeBalance('${user.id}', ${Number(user.balance || 0)}, 'add')">زيادة رصيد</button>
-          <button class="small-btn danger-btn" onclick="changeBalance('${user.id}', ${Number(user.balance || 0)}, 'subtract')">خصم رصيد</button>
-          <button class="small-btn" onclick="changeVip('${user.id}', ${Number(user.vip_level || 0)})">تعديل VIP</button>
-        </div>
+        <span class="mini-badge">${user.role || "user"}</span>
       </div>
-    `;
-  }).join("");
+
+      <div class="deposit-row">
+        <span>UID</span>
+        <strong>${user.uid || "--"}</strong>
+      </div>
+
+      <div class="deposit-row">
+        <span>الرصيد</span>
+        <strong>${formatMoney(user.balance)} USDT</strong>
+      </div>
+
+      <div class="deposit-row">
+        <span>VIP</span>
+        <strong>VIP${user.vip_level || 0}</strong>
+      </div>
+
+      <div class="deposit-row">
+        <span>الحالة</span>
+        <strong>${user.is_active ? "نشط" : "موقوف"}</strong>
+      </div>
+
+      <div class="admin-actions">
+        <button class="small-btn" onclick="changeBalance('${user.id}', ${Number(user.balance || 0)}, 'add')">زيادة رصيد</button>
+        <button class="small-btn danger-btn" onclick="changeBalance('${user.id}', ${Number(user.balance || 0)}, 'subtract')">خصم رصيد</button>
+        <button class="small-btn" onclick="changeVip('${user.id}', ${Number(user.vip_level || 0)})">تعديل VIP</button>
+      </div>
+    </div>
+  `).join("");
 }
 
 async function changeBalance(userId, currentBalance, mode) {
@@ -150,23 +137,17 @@ async function changeBalance(userId, currentBalance, mode) {
     if (newBalance < 0) newBalance = 0;
   }
 
-  const vipLevel = newBalance >= 1000 ? 1 : 0;
-
   const { error } = await supabaseClient
     .from("users")
-    .update({
-      balance: newBalance,
-      vip_level: vipLevel
-    })
+    .update({ balance: newBalance })
     .eq("id", userId);
 
   if (error) {
-    console.error(error);
     alert("فشل تعديل الرصيد");
     return;
   }
 
-  alert("تم تعديل الرصيد بنجاح");
+  alert("تم تعديل الرصيد");
   await loadUsers();
 }
 
@@ -186,309 +167,171 @@ async function changeVip(userId, currentVip) {
     .eq("id", userId);
 
   if (error) {
-    console.error(error);
     alert("فشل تعديل VIP");
     return;
   }
 
-  alert("تم تعديل VIP بنجاح");
+  alert("تم تعديل VIP");
   await loadUsers();
+}
+
+async function quickAddBalance() {
+  const email = document.getElementById("quickEmail").value.trim();
+  const amount = parseFloat(document.getElementById("quickAmount").value);
+
+  if (!email || isNaN(amount) || amount <= 0) {
+    alert("أدخل الإيميل والمبلغ بشكل صحيح");
+    return;
+  }
+
+  const { data: user, error } = await supabaseClient
+    .from("users")
+    .select("*")
+    .eq("email", email)
+    .single();
+
+  if (error || !user) {
+    alert("المستخدم غير موجود");
+    return;
+  }
+
+  const newBalance = Number(user.balance || 0) + amount;
+
+  const { error: updateError } = await supabaseClient
+    .from("users")
+    .update({ balance: newBalance })
+    .eq("id", user.id);
+
+  if (updateError) {
+    alert("فشل إضافة الرصيد");
+    return;
+  }
+
+  alert("تمت إضافة الرصيد بنجاح");
+  document.getElementById("quickEmail").value = "";
+  document.getElementById("quickAmount").value = "";
+  await loadUsers();
+}
+
+async function createCode() {
+  const code = document.getElementById("quickCode").value.trim();
+
+  if (!code) {
+    alert("اكتب الكود أولاً");
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("bonus_codes")
+    .insert([{ code, is_active: true }]);
+
+  if (error) {
+    alert("فشل إنشاء الكود");
+    return;
+  }
+
+  alert("تم إنشاء الكود بنجاح");
+  document.getElementById("quickCode").value = "";
 }
 
 async function loadDepositsAdmin() {
-  const depositsAdminList = document.getElementById("depositsAdminList");
-  depositsAdminList.innerHTML = `<p class="note">جاري تحميل الإيداعات...</p>`;
+  const box = document.getElementById("depositsAdminList");
+  box.innerHTML = `<p class="note">جاري تحميل الإيداعات...</p>`;
 
   const { data, error } = await supabaseClient
     .from("deposits")
-    .select(`
-      *,
-      users(id, full_name, email, uid, balance, investment_balance, available_withdraw, vip_level)
-    `)
+    .select(`*, users(full_name,email,uid)`)
     .order("created_at", { ascending: false })
-    .limit(50);
+    .limit(20);
 
   if (error) {
-    console.error(error);
-    depositsAdminList.innerHTML = `<p class="note">تعذر تحميل الإيداعات</p>`;
+    box.innerHTML = `<p class="note">تعذر تحميل الإيداعات</p>`;
     return;
   }
 
-  if (!data || data.length === 0) {
-    depositsAdminList.innerHTML = `<p class="note">لا توجد إيداعات</p>`;
+  if (!data || !data.length) {
+    box.innerHTML = `<p class="note">لا توجد إيداعات</p>`;
     return;
   }
 
-  depositsAdminList.innerHTML = data.map((item) => {
-    return `
-      <div class="admin-card">
-        <div class="admin-card-top">
-          <div>
-            <h3>${item.users?.full_name || "مستخدم"}</h3>
-            <p>${item.users?.email || "-"}</p>
-          </div>
-          <span class="mini-badge">${item.status}</span>
+  box.innerHTML = data.map((item) => `
+    <div class="admin-card">
+      <div class="admin-card-top">
+        <div>
+          <h3>${item.users?.full_name || "مستخدم"}</h3>
+          <p>${item.users?.email || "-"}</p>
         </div>
-
-        <div class="deposit-row">
-          <span>UID</span>
-          <strong>${item.users?.uid || "--"}</strong>
-        </div>
-
-        <div class="deposit-row">
-          <span>المبلغ</span>
-          <strong>${formatMoney(item.amount)} USDT</strong>
-        </div>
-
-        <div class="deposit-row">
-          <span>الشبكة</span>
-          <strong>${item.network || "TRC20"}</strong>
-        </div>
-
-        <div class="deposit-row">
-          <span>النقاط المضافة</span>
-          <strong>${formatMoney(item.points_added)}</strong>
-        </div>
-
-        <div class="deposit-row">
-          <span>التاريخ</span>
-          <strong>${new Date(item.created_at).toLocaleString("ar-EG")}</strong>
-        </div>
-
-        ${
-          item.txid
-            ? `
-          <div class="deposit-row">
-            <span>TxID</span>
-            <strong class="txid-text">${item.txid}</strong>
-          </div>
-        `
-            : ""
-        }
-
-        <div class="admin-actions">
-          <button class="small-btn" onclick="confirmDeposit('${item.id}', '${item.user_id}', ${Number(item.amount || 0)}, '${item.status}')">تأكيد الإيداع</button>
-          <button class="small-btn danger-btn" onclick="rejectDeposit('${item.id}', '${item.status}')">رفض الإيداع</button>
-        </div>
+        <span class="mini-badge">${item.status}</span>
       </div>
-    `;
-  }).join("");
-}
 
-async function confirmDeposit(depositId, userId, amount, currentStatus) {
-  if (currentStatus === "confirmed") {
-    alert("هذا الإيداع مؤكد مسبقاً");
-    return;
-  }
+      <div class="deposit-row">
+        <span>UID</span>
+        <strong>${item.users?.uid || "--"}</strong>
+      </div>
 
-  if (currentStatus === "rejected") {
-    alert("هذا الإيداع مرفوض مسبقاً");
-    return;
-  }
+      <div class="deposit-row">
+        <span>المبلغ</span>
+        <strong>${formatMoney(item.amount)} USDT</strong>
+      </div>
 
-  const note = prompt("ملاحظة الإدارة (اختياري)") || null;
-
-  const { data: user, error: userError } = await supabaseClient
-    .from("users")
-    .select("*")
-    .eq("id", userId)
-    .single();
-
-  if (userError || !user) {
-    console.error(userError);
-    alert("تعذر تحميل بيانات المستخدم");
-    return;
-  }
-
-  const pointsToAdd = Number(amount || 0);
-  const newBalance = Number(user.balance || 0) + pointsToAdd;
-  const newInvestmentBalance = Number(user.investment_balance || 0) + pointsToAdd;
-  const newAvailableWithdraw = Number(user.available_withdraw || 0) + pointsToAdd;
-  const newVipLevel = newBalance >= 1000 ? 1 : Number(user.vip_level || 0);
-
-  const { error: depositError } = await supabaseClient
-    .from("deposits")
-    .update({
-      status: "confirmed",
-      points_added: pointsToAdd,
-      admin_note: note,
-      confirmed_at: new Date().toISOString()
-    })
-    .eq("id", depositId);
-
-  if (depositError) {
-    console.error(depositError);
-    alert("فشل تأكيد الإيداع");
-    return;
-  }
-
-  const { error: userUpdateError } = await supabaseClient
-    .from("users")
-    .update({
-      balance: newBalance,
-      investment_balance: newInvestmentBalance,
-      available_withdraw: newAvailableWithdraw,
-      vip_level: newVipLevel
-    })
-    .eq("id", userId);
-
-  if (userUpdateError) {
-    console.error(userUpdateError);
-    alert("تم تأكيد الإيداع لكن فشل تحديث رصيد المستخدم");
-    return;
-  }
-
-  alert("تم تأكيد الإيداع وإضافة الرصيد بنجاح");
-  await loadStats();
-  await loadUsers();
-  await loadDepositsAdmin();
-}
-
-async function rejectDeposit(depositId, currentStatus) {
-  if (currentStatus === "confirmed") {
-    alert("لا يمكن رفض إيداع مؤكد");
-    return;
-  }
-
-  if (currentStatus === "rejected") {
-    alert("هذا الإيداع مرفوض مسبقاً");
-    return;
-  }
-
-  const note = prompt("سبب الرفض") || "تم رفض الإيداع من الإدارة";
-
-  const { error } = await supabaseClient
-    .from("deposits")
-    .update({
-      status: "rejected",
-      admin_note: note
-    })
-    .eq("id", depositId);
-
-  if (error) {
-    console.error(error);
-    alert("فشل رفض الإيداع");
-    return;
-  }
-
-  alert("تم رفض الإيداع");
-  await loadStats();
-  await loadDepositsAdmin();
+      <div class="deposit-row">
+        <span>الشبكة</span>
+        <strong>${item.network || "TRC20"}</strong>
+      </div>
+    </div>
+  `).join("");
 }
 
 async function loadWithdrawalsAdmin() {
-  const withdrawalsAdminList = document.getElementById("withdrawalsAdminList");
-  withdrawalsAdminList.innerHTML = `<p class="note">جاري تحميل السحوبات...</p>`;
+  const box = document.getElementById("withdrawalsAdminList");
+  box.innerHTML = `<p class="note">جاري تحميل السحوبات...</p>`;
 
   const { data, error } = await supabaseClient
     .from("withdrawals")
-    .select(`
-      *,
-      users(full_name, email, uid)
-    `)
+    .select(`*, users(full_name,email,uid)`)
     .order("created_at", { ascending: false })
-    .limit(50);
+    .limit(20);
 
   if (error) {
-    console.error(error);
-    withdrawalsAdminList.innerHTML = `<p class="note">تعذر تحميل السحوبات</p>`;
+    box.innerHTML = `<p class="note">تعذر تحميل السحوبات</p>`;
     return;
   }
 
-  if (!data || data.length === 0) {
-    withdrawalsAdminList.innerHTML = `<p class="note">لا توجد سحوبات</p>`;
+  if (!data || !data.length) {
+    box.innerHTML = `<p class="note">لا توجد سحوبات</p>`;
     return;
   }
 
-  withdrawalsAdminList.innerHTML = data.map((item) => {
-    return `
-      <div class="admin-card">
-        <div class="admin-card-top">
-          <div>
-            <h3>${item.users?.full_name || "مستخدم"}</h3>
-            <p>${item.users?.email || "-"}</p>
-          </div>
-          <span class="mini-badge">${item.status}</span>
+  box.innerHTML = data.map((item) => `
+    <div class="admin-card">
+      <div class="admin-card-top">
+        <div>
+          <h3>${item.users?.full_name || "مستخدم"}</h3>
+          <p>${item.users?.email || "-"}</p>
         </div>
-
-        <div class="deposit-row">
-          <span>UID</span>
-          <strong>${item.users?.uid || "--"}</strong>
-        </div>
-
-        <div class="deposit-row">
-          <span>المبلغ</span>
-          <strong>${formatMoney(item.amount)} USDT</strong>
-        </div>
-
-        <div class="deposit-row">
-          <span>المحفظة</span>
-          <strong class="txid-text">${item.wallet_address}</strong>
-        </div>
-
-        <div class="deposit-row">
-          <span>التاريخ</span>
-          <strong>${new Date(item.created_at).toLocaleString("ar-EG")}</strong>
-        </div>
-
-        <div class="admin-actions">
-          <button class="small-btn" onclick="approveWithdrawal('${item.id}')">قبول</button>
-          <button class="small-btn danger-btn" onclick="rejectWithdrawal('${item.id}')">رفض</button>
-        </div>
+        <span class="mini-badge">${item.status}</span>
       </div>
-    `;
-  }).join("");
-}
 
-async function approveWithdrawal(withdrawalId) {
-  const note = prompt("ملاحظة الإدارة (اختياري)") || null;
+      <div class="deposit-row">
+        <span>UID</span>
+        <strong>${item.users?.uid || "--"}</strong>
+      </div>
 
-  const { error } = await supabaseClient
-    .from("withdrawals")
-    .update({
-      status: "approved",
-      admin_note: note,
-      processed_at: new Date().toISOString()
-    })
-    .eq("id", withdrawalId);
+      <div class="deposit-row">
+        <span>المبلغ</span>
+        <strong>${formatMoney(item.amount)} USDT</strong>
+      </div>
 
-  if (error) {
-    console.error(error);
-    alert("فشل قبول طلب السحب");
-    return;
-  }
-
-  alert("تم قبول طلب السحب");
-  await loadWithdrawalsAdmin();
-  await loadStats();
-}
-
-async function rejectWithdrawal(withdrawalId) {
-  const note = prompt("سبب الرفض") || "تم الرفض من الإدارة";
-
-  const { error } = await supabaseClient
-    .from("withdrawals")
-    .update({
-      status: "rejected",
-      admin_note: note,
-      processed_at: new Date().toISOString()
-    })
-    .eq("id", withdrawalId);
-
-  if (error) {
-    console.error(error);
-    alert("فشل رفض طلب السحب");
-    return;
-  }
-
-  alert("تم رفض طلب السحب");
-  await loadWithdrawalsAdmin();
-  await loadStats();
+      <div class="deposit-row">
+        <span>المحفظة</span>
+        <strong class="txid-text">${item.wallet_address}</strong>
+      </div>
+    </div>
+  `).join("");
 }
 
 function enableUserSearch() {
   const searchInput = document.getElementById("userSearch");
-
   searchInput.addEventListener("input", () => {
     const term = searchInput.value.trim().toLowerCase();
     const cards = document.querySelectorAll("[data-user-card]");
