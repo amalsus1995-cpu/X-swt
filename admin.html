@@ -20,34 +20,56 @@
       <a href="account.html" class="lang-btn back-link">رجوع</a>
     </header>
 
-    <section class="section-box">
-      <div class="section-title">
-        <h2>إحصائيات سريعة</h2>
+    <section class="section-box admin-hero">
+      <div class="admin-hero-text">
+        <h2>مرحباً بك في لوحة التحكم</h2>
+        <p>تحكم بالمستخدمين، الإيداعات، السحوبات، والأكواد من مكان واحد.</p>
+      </div>
+    </section>
+
+    <section class="stats-grid">
+      <div class="stat-card">
+        <span>عدد المستخدمين</span>
+        <h3 id="usersCount">0</h3>
+        <small>مستخدم</small>
       </div>
 
-      <div class="stats-grid">
-        <div class="stat-card">
-          <span>عدد المستخدمين</span>
-          <h3 id="usersCount">0</h3>
-          <small>مستخدم</small>
+      <div class="stat-card">
+        <span>الإيداعات</span>
+        <h3 id="depositsCount">0</h3>
+        <small>طلب</small>
+      </div>
+
+      <div class="stat-card">
+        <span>السحوبات</span>
+        <h3 id="withdrawalsCount">0</h3>
+        <small>طلب</small>
+      </div>
+
+      <div class="stat-card">
+        <span>سحوبات معلقة</span>
+        <h3 id="pendingWithdrawalsCount">0</h3>
+        <small>بانتظار</small>
+      </div>
+    </section>
+
+    <section class="section-box">
+      <div class="section-title">
+        <h2>أدوات سريعة</h2>
+      </div>
+
+      <div class="admin-tools-grid">
+        <div class="admin-tool-card">
+          <h3>إضافة رصيد</h3>
+          <input type="email" id="quickEmail" class="form-input" placeholder="إيميل المستخدم" />
+          <input type="number" id="quickAmount" class="form-input" placeholder="المبلغ" />
+          <button class="primary-btn full-btn" onclick="quickAddBalance()">إضافة الآن</button>
         </div>
 
-        <div class="stat-card">
-          <span>طلبات الإيداع</span>
-          <h3 id="depositsCount">0</h3>
-          <small>طلب</small>
-        </div>
-
-        <div class="stat-card">
-          <span>طلبات السحب</span>
-          <h3 id="withdrawalsCount">0</h3>
-          <small>طلب</small>
-        </div>
-
-        <div class="stat-card">
-          <span>سحوبات معلقة</span>
-          <h3 id="pendingWithdrawalsCount">0</h3>
-          <small>بانتظار</small>
+        <div class="admin-tool-card">
+          <h3>إنشاء كود</h3>
+          <input type="text" id="quickCode" class="form-input" placeholder="مثال: BONUS2026" />
+          <button class="primary-btn full-btn" onclick="createCode()">إنشاء الكود</button>
         </div>
       </div>
     </section>
