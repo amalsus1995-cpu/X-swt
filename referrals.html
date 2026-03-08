@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الإحالات</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="top-header">
+<div class="logo-box">
+<div class="logo-circle">👥</div>
+<div>
+<h1>الإحالات</h1>
+<p>دعوة الأصدقاء وكسب المكافآت</p>
+</div>
+</div>
+
+<a href="account.html" class="lang-btn">رجوع</a>
+</header>
+
+
+<section class="section-box">
+
+<div class="section-title">
+<h2>رابط الدعوة الخاص بك</h2>
+</div>
+
+<div class="wallet-card">
+
+<p class="wallet-label">رابط الدعوة</p>
+
+<p class="wallet-address" id="referralLink"></p>
+
+<button class="primary-btn full-btn" onclick="copyReferral()">
+نسخ الرابط
+</button>
+
+<p class="note">
+كل مستخدم يسجل عبر رابطك يعطيك مكافأة.
+</p>
+
+</div>
+
+</section>
+
+
+<section class="section-box">
+
+<div class="section-title">
+<h2>الإحالات الخاصة بك</h2>
+</div>
+
+<div id="referralList" class="deposits-list">
+<p class="note">جاري التحميل...</p>
+</div>
+
+</section>
+
+
+<nav class="bottom-nav">
+
+<a href="index.html" class="nav-item">
+<span>🏠</span>
+<small>الرئيسية</small>
+</a>
+
+<a href="plans.html" class="nav-item">
+<span>📊</span>
+<small>الخطط</small>
+</a>
+
+<a href="deposit.html" class="nav-item">
+<span>📈</span>
+<small>إيداع</small>
+</a>
+
+<a href="withdraw.html" class="nav-item">
+<span>💼</span>
+<small>سحب</small>
+</a>
+
+<a href="account.html" class="nav-item active">
+<span>👤</span>
+<small>الحساب</small>
+</a>
+
+</nav>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="referrals.js"></script>
+
+</body>
+</html>
