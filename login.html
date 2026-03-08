@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل الدخول - 1X.swt</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <section class="section-box" style="margin-top: 40px;">
+      <div class="section-title">
+        <h2>تسجيل الدخول</h2>
+      </div>
+
+      <form id="loginForm" class="profile-links" style="gap: 14px;">
+        <input type="email" id="login_email" placeholder="البريد الإلكتروني" class="form-input" required />
+        <input type="password" id="login_password" placeholder="كلمة المرور" class="form-input" required />
+
+        <button type="submit" class="primary-btn full-btn">دخول</button>
+      </form>
+
+      <p id="loginMessage" class="note" style="margin-top: 14px;"></p>
+
+      <div style="margin-top: 16px; text-align: center;">
+        <a href="register.html">إنشاء حساب جديد</a>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>
