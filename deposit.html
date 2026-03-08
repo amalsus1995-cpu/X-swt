@@ -17,7 +17,7 @@
           <p>شحن الرصيد إلى حسابك</p>
         </div>
       </div>
-      <a href="index.html" class="lang-btn" style="text-decoration:none;">رجوع</a>
+      <a href="index.html" class="lang-btn back-link">رجوع</a>
     </header>
 
     <section class="section-box">
@@ -40,11 +40,12 @@
           TRVTeYxfSg5v9sJfH1HWdxjZaJYCZmJqsu
         </p>
 
-        <button class="primary-btn full-btn" onclick="copyWallet()">نسخ عنوان المحفظة</button>
+        <button class="primary-btn full-btn" type="button" id="copyWalletBtn">نسخ عنوان المحفظة</button>
 
         <p class="note">
           الحد الأدنى للإيداع: <strong>500 USDT</strong><br />
-          أرسل فقط على شبكة <strong>TRC20</strong>
+          أرسل فقط على شبكة <strong>TRC20</strong><br />
+          بعد التحويل أنشئ طلب الإيداع من الأسفل
         </p>
       </div>
     </section>
@@ -69,24 +70,47 @@
           type="text"
           id="depositTxid"
           class="form-input"
-          placeholder="TxID / Hash (اختياري حالياً)"
+          placeholder="TxID / Hash (اختياري)"
         />
 
         <button type="submit" class="primary-btn full-btn">إنشاء الطلب</button>
       </form>
 
-      <p id="depositMessage" class="note" style="margin-top:14px;"></p>
+      <p id="depositMessage" class="note form-message"></p>
     </section>
 
     <section class="section-box">
       <div class="section-title">
-        <h2>حالة الطلبات السابقة</h2>
+        <h2>طلبات الإيداع السابقة</h2>
       </div>
 
       <div id="depositsList" class="deposits-list">
         <p class="note">جاري تحميل الطلبات...</p>
       </div>
     </section>
+
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-item">
+        <span>🏠</span>
+        <small>الرئيسية</small>
+      </a>
+      <a href="#" class="nav-item">
+        <span>📊</span>
+        <small>الأسعار</small>
+      </a>
+      <a href="#" class="nav-item">
+        <span>📈</span>
+        <small>الاستثمار</small>
+      </a>
+      <a href="#" class="nav-item active">
+        <span>💼</span>
+        <small>الأصول</small>
+      </a>
+      <a href="#" class="nav-item">
+        <span>👤</span>
+        <small>الحساب</small>
+      </a>
+    </nav>
 
   </div>
 
