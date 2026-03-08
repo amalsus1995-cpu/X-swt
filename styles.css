@@ -2,13 +2,24 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Tahoma", sans-serif;
+  font-family: "Tahoma", Arial, sans-serif;
 }
 
 body {
   background: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
   color: #222;
   min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
 .app {
@@ -22,6 +33,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   margin-bottom: 16px;
 }
 
@@ -42,11 +54,13 @@ body {
   font-weight: bold;
   color: #444;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
 }
 
 .logo-box h1 {
   font-size: 22px;
   margin-bottom: 4px;
+  color: #111;
 }
 
 .logo-box p {
@@ -62,13 +76,14 @@ body {
   border-radius: 14px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 
 .back-link {
   text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .hero-card {
@@ -123,6 +138,9 @@ body {
   cursor: pointer;
   transition: 0.3s ease;
   font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .primary-btn {
@@ -153,7 +171,7 @@ body {
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   border-radius: 20px;
   padding: 18px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
@@ -169,6 +187,7 @@ body {
   font-size: 24px;
   margin: 10px 0 6px;
   color: #111;
+  word-break: break-word;
 }
 
 .stat-card small {
@@ -176,7 +195,7 @@ body {
 }
 
 .section-box {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.88);
   border-radius: 24px;
   padding: 18px;
   margin-bottom: 18px;
@@ -239,6 +258,7 @@ body {
 .plan-card p {
   color: #555;
   margin-bottom: 8px;
+  line-height: 1.7;
 }
 
 .plan-badge {
@@ -338,6 +358,8 @@ body {
   justify-content: center;
   font-weight: bold;
   font-size: 20px;
+  color: #333;
+  flex-shrink: 0;
 }
 
 .profile-links {
@@ -353,6 +375,31 @@ body {
   padding: 12px 14px;
   border-radius: 14px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  transition: 0.2s ease;
+}
+
+.profile-links a:hover {
+  transform: translateY(-2px);
+}
+
+.account-badge-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.mini-badge {
+  background: linear-gradient(135deg, #f3f3f3, #ffffff);
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.vip-badge {
+  font-weight: bold;
 }
 
 .telegram-float {
@@ -407,6 +454,7 @@ body {
   grid-template-columns: repeat(5, 1fr);
   padding: 10px 8px 14px;
   box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.06);
+  z-index: 1000;
 }
 
 .nav-item {
@@ -437,6 +485,7 @@ body {
   border-radius: 14px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   font-size: 14px;
+  color: #222;
 }
 
 .deposit-form {
@@ -494,6 +543,7 @@ body {
   color: #222;
   font-size: 14px;
   text-align: left;
+  word-break: break-word;
 }
 
 .status-pending {
@@ -513,16 +563,131 @@ body {
 }
 
 .txid-text {
-  max-width: 200px;
+  max-width: 220px;
   word-break: break-all;
 }
 
-@media (max-width: 360px) {
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #fafafa;
+  padding: 14px 16px;
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  color: #444;
+  font-size: 14px;
+}
+
+.upload-label input[type="file"] {
+  background: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+.admin-app {
+  max-width: 560px;
+}
+
+.admin-hero {
+  background: linear-gradient(135deg, #ffffff, #f0f0f0, #e3e3e3);
+}
+
+.admin-hero-text h2 {
+  font-size: 24px;
+  margin-bottom: 8px;
+  color: #111;
+}
+
+.admin-hero-text p {
+  color: #666;
+  line-height: 1.8;
+}
+
+.admin-tools-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.admin-tool-card {
+  background: linear-gradient(180deg, #ffffff, #f7f7f7);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.admin-tool-card h3 {
+  margin-bottom: 12px;
+  font-size: 18px;
+  color: #111;
+}
+
+.admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-card {
+  background: linear-gradient(180deg, #ffffff, #f7f7f7);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.admin-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-card-top h3 {
+  font-size: 17px;
+  margin-bottom: 4px;
+  color: #111;
+}
+
+.admin-card-top p {
+  font-size: 13px;
+  color: #777;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.small-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #d9d9d9, #ffffff, #bfbfbf);
+  color: #222;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.danger-btn {
+  background: linear-gradient(135deg, #ffd9d9, #fff2f2, #ffc9c9);
+  color: #9b1c1c;
+}
+
+@media (max-width: 480px) {
   .actions-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
   .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-tools-grid {
     grid-template-columns: 1fr;
   }
 
@@ -533,5 +698,40 @@ body {
   .deposit-row {
     flex-direction: column;
     gap: 6px;
+  }
+
+  .top-header {
+    align-items: flex-start;
+  }
+
+  .logo-box h1 {
+    font-size: 20px;
+  }
+
+  .hero-text h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 360px) {
+  .app {
+    padding: 14px 14px 100px;
+  }
+
+  .actions-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .logo-circle {
+    width: 48px;
+    height: 48px;
+  }
+
+  .nav-item {
+    font-size: 16px;
+  }
+
+  .nav-item small {
+    font-size: 10px;
   }
 }
