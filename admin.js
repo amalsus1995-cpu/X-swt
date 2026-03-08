@@ -176,18 +176,25 @@ async function changeVip(userId, currentVip) {
 }
 
 async function quickAddBalance() {
-  const email = document.getElementById("quickEmail").value.trim();
+  const uidValue = document.getElementById("quickUid").value.trim();
   const amount = parseFloat(document.getElementById("quickAmount").value);
 
-  if (!email || isNaN(amount) || amount <= 0) {
-    alert("أدخل الإيميل والمبلغ بشكل صحيح");
+  if (!uidValue || isNaN(amount) || amount <= 0) {
+    alert("أدخل UID والمبلغ بشكل صحيح");
+    return;
+  }
+
+  const uid = Number(uidValue);
+
+  if (isNaN(uid)) {
+    alert("UID غير صحيح");
     return;
   }
 
   const { data: user, error } = await supabaseClient
     .from("users")
     .select("*")
-    .eq("email", email)
+    .eq("uid", uid)
     .single();
 
   if (error || !user) {
@@ -208,7 +215,7 @@ async function quickAddBalance() {
   }
 
   alert("تمت إضافة الرصيد بنجاح");
-  document.getElementById("quickEmail").value = "";
+  document.getElementById("quickUid").value = "";
   document.getElementById("quickAmount").value = "";
   await loadUsers();
 }
