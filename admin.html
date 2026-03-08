@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة الأدمن - 1X.swt</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app admin-app">
+
+    <header class="top-header">
+      <div class="logo-box">
+        <div class="logo-circle">AD</div>
+        <div>
+          <h1>لوحة الأدمن</h1>
+          <p>إدارة المستخدمين والعمليات</p>
+        </div>
+      </div>
+      <a href="account.html" class="lang-btn back-link">رجوع</a>
+    </header>
+
+    <section class="section-box">
+      <div class="section-title">
+        <h2>إحصائيات سريعة</h2>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span>عدد المستخدمين</span>
+          <h3 id="usersCount">0</h3>
+          <small>مستخدم</small>
+        </div>
+
+        <div class="stat-card">
+          <span>طلبات الإيداع</span>
+          <h3 id="depositsCount">0</h3>
+          <small>طلب</small>
+        </div>
+
+        <div class="stat-card">
+          <span>طلبات السحب</span>
+          <h3 id="withdrawalsCount">0</h3>
+          <small>طلب</small>
+        </div>
+
+        <div class="stat-card">
+          <span>سحوبات معلقة</span>
+          <h3 id="pendingWithdrawalsCount">0</h3>
+          <small>بانتظار</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-box">
+      <div class="section-title">
+        <h2>المستخدمون</h2>
+      </div>
+
+      <input
+        type="text"
+        id="userSearch"
+        class="form-input"
+        placeholder="ابحث بالاسم أو الإيميل أو UID"
+      />
+
+      <div id="usersList" class="admin-list">
+        <p class="note">جاري تحميل المستخدمين...</p>
+      </div>
+    </section>
+
+    <section class="section-box">
+      <div class="section-title">
+        <h2>الإيداعات</h2>
+      </div>
+
+      <div id="depositsAdminList" class="admin-list">
+        <p class="note">جاري تحميل الإيداعات...</p>
+      </div>
+    </section>
+
+    <section class="section-box">
+      <div class="section-title">
+        <h2>السحوبات</h2>
+      </div>
+
+      <div id="withdrawalsAdminList" class="admin-list">
+        <p class="note">جاري تحميل السحوبات...</p>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
