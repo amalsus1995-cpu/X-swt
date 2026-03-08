@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إنشاء حساب - 1X.swt</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <section class="section-box" style="margin-top: 40px;">
+      <div class="section-title">
+        <h2>إنشاء حساب جديد</h2>
+      </div>
+
+      <form id="registerForm" class="profile-links" style="gap: 14px;">
+        <input type="text" id="full_name" placeholder="الاسم الكامل" class="form-input" required />
+        <input type="email" id="email" placeholder="البريد الإلكتروني" class="form-input" required />
+        <input type="text" id="phone" placeholder="رقم الهاتف" class="form-input" />
+        <input type="password" id="password" placeholder="كلمة المرور" class="form-input" required />
+        <input type="password" id="confirm_password" placeholder="تأكيد كلمة المرور" class="form-input" required />
+        <input type="text" id="referral_code" placeholder="كود الدعوة (اختياري)" class="form-input" />
+
+        <button type="submit" class="primary-btn full-btn">إنشاء الحساب</button>
+      </form>
+
+      <p id="registerMessage" class="note" style="margin-top: 14px;"></p>
+
+      <div style="margin-top: 16px; text-align: center;">
+        <a href="login.html">لديك حساب؟ تسجيل الدخول</a>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>
