@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ربط Telegram - 1X.swt</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+
+    <header class="top-header">
+      <div class="logo-box">
+        <div class="logo-circle">TG</div>
+        <div>
+          <h1>ربط Telegram</h1>
+          <p>ربط حسابك مع البوت والإشعارات</p>
+        </div>
+      </div>
+      <a href="account.html" class="lang-btn back-link">رجوع</a>
+    </header>
+
+    <section class="section-box">
+      <div class="section-title">
+        <h2>حالة الربط</h2>
+      </div>
+
+      <div class="deposits-list">
+        <div class="deposit-item">
+          <div class="deposit-row">
+            <span>الحالة</span>
+            <strong id="telegramLinkStatus">جاري التحميل...</strong>
+          </div>
+
+          <div class="deposit-row">
+            <span>اسم المستخدم</span>
+            <strong id="telegramUsernameValue">-</strong>
+          </div>
+
+          <div class="deposit-row">
+            <span>Chat ID</span>
+            <strong id="telegramChatIdValue">-</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-box">
+      <div class="section-title">
+        <h2>ربط الحساب</h2>
+      </div>
+
+      <form id="telegramForm" class="deposit-form">
+        <input
+          type="text"
+          id="telegramUsernameInput"
+          class="form-input"
+          placeholder="اسم المستخدم في تيليجرام بدون @"
+        />
+
+        <input
+          type="text"
+          id="telegramChatIdInput"
+          class="form-input"
+          placeholder="Telegram Chat ID (اختياري)"
+        />
+
+        <button type="submit" class="primary-btn full-btn">حفظ بيانات Telegram</button>
+      </form>
+
+      <p id="telegramMessage" class="note form-message"></p>
+
+      <div style="margin-top: 14px;">
+        <a
+          href="https://t.me/"
+          target="_blank"
+          class="primary-btn full-btn back-link"
+          id="openBotBtn"
+        >
+          فتح البوت
+        </a>
+      </div>
+
+      <p class="note">
+        افتح البوت واضغط Start، ثم احفظ اسم المستخدم هنا لربط الإشعارات بشكل أسهل.
+      </p>
+    </section>
+
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-item">
+        <span>🏠</span>
+        <small>الرئيسية</small>
+      </a>
+      <a href="plans.html" class="nav-item">
+        <span>📊</span>
+        <small>الخطط</small>
+      </a>
+      <a href="deposit.html" class="nav-item">
+        <span>📈</span>
+        <small>إيداع</small>
+      </a>
+      <a href="withdraw.html" class="nav-item">
+        <span>💼</span>
+        <small>سحب</small>
+      </a>
+      <a href="account.html" class="nav-item active">
+        <span>👤</span>
+        <small>الحساب</small>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="telegram.js"></script>
+</body>
+</html>
