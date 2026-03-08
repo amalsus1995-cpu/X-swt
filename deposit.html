@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الإيداع - 1X.swt</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+
+    <header class="top-header">
+      <div class="logo-box">
+        <div class="logo-circle">1X</div>
+        <div>
+          <h1>الإيداع</h1>
+          <p>شحن الرصيد إلى حسابك</p>
+        </div>
+      </div>
+      <a href="index.html" class="lang-btn" style="text-decoration:none;">رجوع</a>
+    </header>
+
+    <section class="section-box">
+      <div class="section-title">
+        <h2>معلومات الإيداع</h2>
+      </div>
+
+      <div class="wallet-card">
+        <p><strong>الشبكة:</strong> TRC20</p>
+
+        <div class="qr-box">
+          <img
+            src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=TRVTeYxfSg5v9sJfH1HWdxjZaJYCZmJqsu"
+            alt="QR Code"
+          />
+        </div>
+
+        <p class="wallet-label">عنوان المحفظة</p>
+        <p class="wallet-address" id="walletAddress">
+          TRVTeYxfSg5v9sJfH1HWdxjZaJYCZmJqsu
+        </p>
+
+        <button class="primary-btn full-btn" onclick="copyWallet()">نسخ عنوان المحفظة</button>
+
+        <p class="note">
+          الحد الأدنى للإيداع: <strong>500 USDT</strong><br />
+          أرسل فقط على شبكة <strong>TRC20</strong>
+        </p>
+      </div>
+    </section>
+
+    <section class="section-box">
+      <div class="section-title">
+        <h2>إنشاء طلب إيداع</h2>
+      </div>
+
+      <form id="depositForm" class="deposit-form">
+        <input
+          type="number"
+          id="depositAmount"
+          class="form-input"
+          placeholder="أدخل مبلغ الإيداع"
+          min="500"
+          step="0.01"
+          required
+        />
+
+        <input
+          type="text"
+          id="depositTxid"
+          class="form-input"
+          placeholder="TxID / Hash (اختياري حالياً)"
+        />
+
+        <button type="submit" class="primary-btn full-btn">إنشاء الطلب</button>
+      </form>
+
+      <p id="depositMessage" class="note" style="margin-top:14px;"></p>
+    </section>
+
+    <section class="section-box">
+      <div class="section-title">
+        <h2>حالة الطلبات السابقة</h2>
+      </div>
+
+      <div id="depositsList" class="deposits-list">
+        <p class="note">جاري تحميل الطلبات...</p>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="deposit.js"></script>
+</body>
+</html>
