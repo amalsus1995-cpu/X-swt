@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الحساب - 1X.swt</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+
+    <header class="top-header">
+      <div class="logo-box">
+        <div class="logo-circle">1X</div>
+        <div>
+          <h1>الحساب الشخصي</h1>
+          <p>إدارة الملف الشخصي والحساب</p>
+        </div>
+      </div>
+      <a href="index.html" class="lang-btn back-link">رجوع</a>
+    </header>
+
+    <section class="section-box">
+      <div class="profile-card">
+        <div class="profile-top">
+          <div class="avatar" id="avatarLetter">U</div>
+          <div>
+            <h3 id="userName">جاري التحميل...</h3>
+            <p id="userEmail">...</p>
+          </div>
+        </div>
+
+        <div class="account-badge-row">
+          <span class="mini-badge" id="userUid">UID: --</span>
+          <span class="mini-badge vip-badge" id="vipLevel">VIP0</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-box">
+      <div class="section-title">
+        <h2>ملخص الحساب</h2>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span>الرصيد الرئيسي</span>
+          <h3 id="balanceValue">0</h3>
+          <small>USDT</small>
+        </div>
+
+        <div class="stat-card">
+          <span>الرصيد الاستثماري</span>
+          <h3 id="investmentBalanceValue">0</h3>
+          <small>USDT</small>
+        </div>
+
+        <div class="stat-card">
+          <span>إجمالي الأرباح</span>
+          <h3 id="totalProfitValue">0</h3>
+          <small>USDT</small>
+        </div>
+
+        <div class="stat-card">
+          <span>المتاح للسحب</span>
+          <h3 id="availableWithdrawValue">0</h3>
+          <small>USDT</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-box">
+      <div class="section-title">
+        <h2>الحالة</h2>
+      </div>
+
+      <div class="deposits-list">
+        <div class="deposit-item">
+          <div class="deposit-row">
+            <span>الحالة</span>
+            <strong id="accountStatus">نشط</strong>
+          </div>
+          <div class="deposit-row">
+            <span>توثيق الهوية</span>
+            <strong id="verifyStatus">غير موثق</strong>
+          </div>
+          <div class="deposit-row">
+            <span>ربط Telegram</span>
+            <strong id="telegramStatus">غير مربوط</strong>
+          </div>
+          <div class="deposit-row">
+            <span>الدور</span>
+            <strong id="roleStatus">user</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-box">
+      <div class="section-title">
+        <h2>الإعدادات والخدمات</h2>
+      </div>
+
+      <div class="profile-links">
+        <a href="deposit.html">الإيداع</a>
+        <a href="withdraw.html">السحب</a>
+        <a href="#">الاستثمار</a>
+        <a href="#">الإحالات</a>
+        <a href="#">ربط Telegram</a>
+        <a href="#">التحقق من الهوية</a>
+        <a href="#">تغيير كلمة المرور</a>
+        <a href="#">تغيير كلمة مرور المعاملة</a>
+        <a href="#" id="adminPanelLink" style="display:none;">لوحة الأدمن</a>
+        <a href="#" id="logoutBtn">تسجيل الخروج</a>
+      </div>
+    </section>
+
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-item">
+        <span>🏠</span>
+        <small>الرئيسية</small>
+      </a>
+      <a href="#" class="nav-item">
+        <span>📊</span>
+        <small>الأسعار</small>
+      </a>
+      <a href="#" class="nav-item">
+        <span>📈</span>
+        <small>الاستثمار</small>
+      </a>
+      <a href="#" class="nav-item">
+        <span>💼</span>
+        <small>الأصول</small>
+      </a>
+      <a href="account.html" class="nav-item active">
+        <span>👤</span>
+        <small>الحساب</small>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="account.js"></script>
+</body>
+</html>
