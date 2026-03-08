@@ -103,6 +103,11 @@ function renderUsers(users) {
         </div>
 
         <div class="deposit-row">
+          <span>الرصيد الاستثماري</span>
+          <strong>${formatMoney(user.investment_balance)} USDT</strong>
+        </div>
+
+        <div class="deposit-row">
           <span>المتاح للسحب</span>
           <strong>${formatMoney(user.available_withdraw)} USDT</strong>
         </div>
@@ -145,9 +150,14 @@ async function changeBalance(userId, currentBalance, mode) {
     if (newBalance < 0) newBalance = 0;
   }
 
+  const vipLevel = newBalance >= 1000 ? 1 : 0;
+
   const { error } = await supabaseClient
     .from("users")
-    .update({ balance: newBalance })
+    .update({
+      balance: newBalance,
+      vip_level: vipLevel
+    })
     .eq("id", userId);
 
   if (error) {
@@ -193,10 +203,10 @@ async function loadDepositsAdmin() {
     .from("deposits")
     .select(`
       *,
-      users(full_name, email, uid)
+      users(id, full_name, email, uid, balance, investment_balance, available_withdraw, vip_level)
     `)
     .order("created_at", { ascending: false })
-    .limit(30);
+    .limit(50);
 
   if (error) {
     console.error(error);
@@ -244,9 +254,126 @@ async function loadDepositsAdmin() {
           <span>التاريخ</span>
           <strong>${new Date(item.created_at).toLocaleString("ar-EG")}</strong>
         </div>
+
+        ${
+          item.txid
+            ? `
+          <div class="deposit-row">
+            <span>TxID</span>
+            <strong class="txid-text">${item.txid}</strong>
+          </div>
+        `
+            : ""
+        }
+
+        <div class="admin-actions">
+          <button class="small-btn" onclick="confirmDeposit('${item.id}', '${item.user_id}', ${Number(item.amount || 0)}, '${item.status}')">تأكيد الإيداع</button>
+          <button class="small-btn danger-btn" onclick="rejectDeposit('${item.id}', '${item.status}')">رفض الإيداع</button>
+        </div>
       </div>
     `;
   }).join("");
+}
+
+async function confirmDeposit(depositId, userId, amount, currentStatus) {
+  if (currentStatus === "confirmed") {
+    alert("هذا الإيداع مؤكد مسبقاً");
+    return;
+  }
+
+  if (currentStatus === "rejected") {
+    alert("هذا الإيداع مرفوض مسبقاً");
+    return;
+  }
+
+  const note = prompt("ملاحظة الإدارة (اختياري)") || null;
+
+  const { data: user, error: userError } = await supabaseClient
+    .from("users")
+    .select("*")
+    .eq("id", userId)
+    .single();
+
+  if (userError || !user) {
+    console.error(userError);
+    alert("تعذر تحميل بيانات المستخدم");
+    return;
+  }
+
+  const pointsToAdd = Number(amount || 0);
+  const newBalance = Number(user.balance || 0) + pointsToAdd;
+  const newInvestmentBalance = Number(user.investment_balance || 0) + pointsToAdd;
+  const newAvailableWithdraw = Number(user.available_withdraw || 0) + pointsToAdd;
+  const newVipLevel = newBalance >= 1000 ? 1 : Number(user.vip_level || 0);
+
+  const { error: depositError } = await supabaseClient
+    .from("deposits")
+    .update({
+      status: "confirmed",
+      points_added: pointsToAdd,
+      admin_note: note,
+      confirmed_at: new Date().toISOString()
+    })
+    .eq("id", depositId);
+
+  if (depositError) {
+    console.error(depositError);
+    alert("فشل تأكيد الإيداع");
+    return;
+  }
+
+  const { error: userUpdateError } = await supabaseClient
+    .from("users")
+    .update({
+      balance: newBalance,
+      investment_balance: newInvestmentBalance,
+      available_withdraw: newAvailableWithdraw,
+      vip_level: newVipLevel
+    })
+    .eq("id", userId);
+
+  if (userUpdateError) {
+    console.error(userUpdateError);
+    alert("تم تأكيد الإيداع لكن فشل تحديث رصيد المستخدم");
+    return;
+  }
+
+  alert("تم تأكيد الإيداع وإضافة الرصيد بنجاح");
+  await loadStats();
+  await loadUsers();
+  await loadDepositsAdmin();
+}
+
+async function rejectDeposit(depositId, currentStatus) {
+  if (currentStatus === "confirmed") {
+    alert("لا يمكن رفض إيداع مؤكد");
+    return;
+  }
+
+  if (currentStatus === "rejected") {
+    alert("هذا الإيداع مرفوض مسبقاً");
+    return;
+  }
+
+  const note = prompt("سبب الرفض") || "تم رفض الإيداع من الإدارة";
+
+  const { error } = await supabaseClient
+    .from("deposits")
+    .update({
+      status: "rejected",
+      admin_note: note
+    })
+    .eq("id", depositId);
+
+  if (error) {
+    console.error(error);
+    alert("فشل رفض الإيداع");
+    return;
+  }
+
+  alert("تم رفض الإيداع");
+  await loadStats();
+  await loadDepositsAdmin();
 }
 
 async function loadWithdrawalsAdmin() {
@@ -260,7 +387,7 @@ async function loadWithdrawalsAdmin() {
       users(full_name, email, uid)
     `)
     .order("created_at", { ascending: false })
-    .limit(30);
+    .limit(50);
 
   if (error) {
     console.error(error);
